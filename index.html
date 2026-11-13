@@ -1,0 +1,2790 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ShareServe AI — Surplus Food Redistribution</title>
+
+<style>
+:root{
+  --bg:#f7faf8;
+  --card:#fff;
+  --text:#142018;
+  --muted:#6b766f;
+  --primary:#1b8f5a;
+  --dark:#12231a;
+  --border:#e1e9e4;
+  --soft:#eaf8ef;
+  --orange:#fff1da;
+  --blue:#eaf1ff
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text)
+}
+button,input,select,textarea{font:inherit}
+.hidden{display:none!important}
+.container{width:min(1180px,92%);margin:auto}
+
+header{
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:30
+}
+nav{
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+.brand{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  font-weight:850;
+  font-size:21px
+}
+.logo{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),#55b96d);
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-weight:900
+}
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:11px 16px;
+  font-weight:750;
+  cursor:pointer
+}
+.primary{background:var(--primary);color:#fff}
+.outline{background:#fff;border:1px solid var(--border)}
+
+.hero{
+  padding:74px 0;
+  background:linear-gradient(180deg,#fff,var(--bg))
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  gap:48px;
+  align-items:center
+}
+.eyebrow{
+  display:inline-block;
+  padding:7px 11px;
+  border-radius:99px;
+  background:var(--soft);
+  color:#136e45;
+  font-size:13px;
+  font-weight:800
+}
+h1{
+  font-size:54px;
+  line-height:1.03;
+  margin:16px 0;
+  letter-spacing:-1.6px
+}
+h2{font-size:34px;margin:0 0 12px}
+.lead{
+  font-size:18px;
+  line-height:1.65;
+  color:var(--muted)
+}
+.hero-actions{
+  display:flex;
+  gap:12px;
+  margin-top:24px;
+  flex-wrap:wrap
+}
+.ai-card{
+  background:var(--dark);
+  color:#fff;
+  border-radius:24px;
+  padding:26px
+}
+.muted{color:#b8c4bc}
+.score-row{
+  display:grid;
+  grid-template-columns:70px 1fr;
+  gap:12px;
+  align-items:center;
+  padding:13px 0;
+  border-top:1px solid #ffffff18
+}
+.score{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#ffffff12;
+  font-weight:900
+}
+
+section{padding:68px 0}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px
+}
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:20px
+}
+.card p{color:var(--muted);line-height:1.5}
+.flow{
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  gap:8px
+}
+.step{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:14px 8px;
+  text-align:center;
+  font-size:13px;
+  font-weight:800
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#09140db8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:50;
+  padding:18px
+}
+.modalbox{
+  width:min(520px,100%);
+  background:#fff;
+  border-radius:20px;
+  padding:24px
+}
+.form{display:grid;gap:12px}
+.form input,.form select,.form textarea{
+  width:100%;
+  padding:11px;
+  border:1px solid var(--border);
+  border-radius:9px
+}
+.form textarea{min-height:88px}
+
+.app{min-height:100vh}
+.shell{
+  display:grid;
+  grid-template-columns:245px 1fr;
+  min-height:100vh
+}
+.sidebar{
+  background:#11261b;
+  color:#c9d4ce;
+  padding:22px 16px
+}
+.sidebar .brand{color:#fff;margin-bottom:22px}
+.role-badge{
+  display:inline-block;
+  background:#1d3829;
+  color:#bce3c9;
+  padding:6px 9px;
+  border-radius:99px;
+  font-size:12px;
+  margin-bottom:18px
+}
+.menu{display:grid;gap:7px}
+.menu button{
+  border:0;
+  background:transparent;
+  color:#c9d4ce;
+  text-align:left;
+  padding:11px;
+  border-radius:9px;
+  cursor:pointer
+}
+.menu button.active,.menu button:hover{
+  background:#1b3527;
+  color:#fff
+}
+.main{padding:27px}
+.top{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:center
+}
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#dff2e6;
+  color:#126e45;
+  font-weight:850
+}
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin:20px 0
+}
+.kpi{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:17px
+}
+.kpi small{color:var(--muted)}
+.kpi strong{
+  display:block;
+  font-size:28px;
+  margin-top:7px
+}
+.panel{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:19px;
+  margin-bottom:17px
+}
+.panel-grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:17px
+}
+.tag{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:99px;
+  font-size:12px;
+  font-weight:760;
+  background:var(--soft);
+  color:#177047;
+  margin:2px
+}
+.tag.orange{background:var(--orange);color:#a76000}
+.tag.blue{background:var(--blue);color:#295eb6}
+.match{
+  display:grid;
+  grid-template-columns:66px 1fr auto;
+  gap:13px;
+  align-items:center;
+  padding:13px 0;
+  border-bottom:1px solid var(--border)
+}
+.matchscore{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--soft);
+  color:#126e45;
+  font-weight:900
+}
+.progress{
+  height:9px;
+  background:#edf1ee;
+  border-radius:99px;
+  overflow:hidden
+}
+.progress span{
+  display:block;
+  height:100%;
+  background:var(--primary)
+}
+.timeline{display:flex;gap:8px;flex-wrap:wrap}
+.pill{
+  padding:8px 10px;
+  border-radius:9px;
+  background:#eef3ef;
+  color:#607067;
+  font-size:12px;
+  font-weight:760
+}
+.pill.done{background:#e5f6eb;color:#197247}
+.notice{
+  background:#fff7df;
+  border:1px solid #edd392;
+  color:#775700;
+  border-radius:10px;
+  padding:11px 13px;
+  font-size:13px
+}
+.alloc{
+  display:grid;
+  grid-template-columns:1fr 80px;
+  gap:12px;
+  align-items:center;
+  padding:12px 0;
+  border-bottom:1px solid var(--border)
+}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{
+  text-align:left;
+  padding:11px 8px;
+  border-bottom:1px solid var(--border)
+}
+th{font-size:12px;color:var(--muted)}
+
+footer{
+  background:var(--dark);
+  color:#becac2;
+  padding:28px 0
+}
+
+@media(max-width:950px){
+  .hero-grid,.panel-grid{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .flow{grid-template-columns:repeat(4,1fr)}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .shell{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  h1{font-size:40px}
+  .cards,.kpis{grid-template-columns:1fr}
+  .flow{grid-template-columns:repeat(2,1fr)}
+  .main{padding:17px}
+}
+
+.auth-page{
+  min-height:100vh;
+  background:linear-gradient(135deg,#f4fbf6 0%,#fff 55%,#eaf8ef 100%)
+}
+.auth-header{
+  height:76px;
+  background:#fff;
+  border-bottom:1px solid var(--border)
+}
+.auth-header .container{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+.auth-main{
+  width:min(1080px,92%);
+  margin:0 auto;
+  padding:52px 0;
+  display:grid;
+  grid-template-columns:1fr 480px;
+  gap:54px;
+  align-items:center;
+  min-height:calc(100vh - 76px)
+}
+.auth-intro h1{font-size:46px;max-width:540px}
+.auth-intro p{
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.7;
+  max-width:500px
+}
+.auth-points{
+  display:grid;
+  gap:12px;
+  margin-top:26px;
+  color:#385246;
+  font-weight:700
+}
+.auth-points div{display:flex;gap:10px;align-items:center}
+.auth-check{
+  width:25px;
+  height:25px;
+  border-radius:50%;
+  background:var(--soft);
+  color:var(--primary);
+  display:grid;
+  place-items:center;
+  flex:none
+}
+.auth-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 18px 55px #143b2412
+}
+.auth-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  background:#f1f6f2;
+  border-radius:12px;
+  padding:4px;
+  margin-bottom:24px
+}
+.auth-tabs button{
+  border:0;
+  background:transparent;
+  padding:11px;
+  border-radius:9px;
+  font-weight:800;
+  color:var(--muted);
+  cursor:pointer
+}
+.auth-tabs button.active{
+  background:#fff;
+  color:var(--primary);
+  box-shadow:0 2px 8px #14201812
+}
+.auth-card h2{font-size:27px;margin:0 0 7px}
+.auth-card .sub{
+  color:var(--muted);
+  margin:0 0 22px;
+  line-height:1.5
+}
+.auth-form{display:grid;gap:9px}
+.auth-form label{
+  font-size:13px;
+  font-weight:800;
+  color:#34483b;
+  margin-top:5px
+}
+.auth-form input,.auth-form select{
+  width:100%;
+  padding:13px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:#fff
+}
+.auth-form input:focus,.auth-form select:focus{
+  outline:2px solid #b9e6c8;
+  border-color:var(--primary)
+}
+.auth-submit{width:100%;margin-top:12px;padding:13px}
+.auth-switch{
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+  margin:18px 0 0
+}
+.auth-switch button{
+  border:0;
+  background:none;
+  color:var(--primary);
+  font-weight:850;
+  cursor:pointer
+}
+.auth-note{margin-top:17px;font-size:12px;line-height:1.5}
+.auth-error{color:#b42318;font-size:13px;min-height:17px}
+
+@media(max-width:850px){
+  .auth-main{
+    grid-template-columns:1fr;
+    gap:24px;
+    padding:32px 0
+  }
+  .auth-intro h1{font-size:38px}
+  .auth-intro p{font-size:15px}
+  .auth-points{display:none}
+  .auth-card{max-width:520px;width:100%;margin:0 auto}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LANDING PAGE -->
+<div id="landing">
+<header>
+  <div class="container">
+    <nav>
+      <div class="brand">
+        <div class="logo">S</div>
+        ShareServe AI
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn outline" onclick="openAuth('signin')">Sign In</button>
+        <button class="btn primary" onclick="openAuth('signup')">Sign Up</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">AI for Food Rescue & Social Impact</span>
+      <h1>Right food. Right NGO. Right time.</h1>
+      <p class="lead">
+        ShareServe AI intelligently redistributes surplus edible food by
+        matching donors with suitable NGOs using quantity, location,
+        urgency, food compatibility and remaining usability time.
+      </p>
+      <div class="hero-actions">
+        <button class="btn primary" onclick="openAuth('signup')">Create Account</button>
+        <button class="btn outline" onclick="openAuth('signin')">Sign In</button>
+      </div>
+    </div>
+
+    <div class="ai-card">
+      <p class="muted">AI-powered food rescue preview</p>
+      <h3>100 Vegetarian Meals</h3>
+      <p class="muted">Prepared 45 min ago • Usable for ~3 hours • Salt Lake</p>
+
+      <div class="score-row">
+        <div class="score">94%</div>
+        <div>
+          <b>Hope Shelter</b>
+          <div class="muted">2.1 km • 50 meals needed • High urgency</div>
+        </div>
+      </div>
+
+      <div class="score-row">
+        <div class="score">89%</div>
+        <div>
+          <b>Seva Kitchen</b>
+          <div class="muted">3.4 km • 30 meals needed • Medium urgency</div>
+        </div>
+      </div>
+
+      <div class="score-row">
+        <div class="score">82%</div>
+        <div>
+          <b>Care Home</b>
+          <div class="muted">5.0 km • 20 meals needed • Medium urgency</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <b>ShareServe AI</b> — Surplus Food Redistribution Prototype
+  </div>
+</footer>
+</div>
+
+<!-- AUTHENTICATION PAGE -->
+<div id="authPage" class="auth-page hidden">
+  <header class="auth-header">
+    <div class="container">
+      <div class="brand">
+        <div class="logo">S</div>
+        ShareServe AI
+      </div>
+      <button class="btn outline" onclick="backHome()">← Back to Home</button>
+    </div>
+  </header>
+
+  <main class="auth-main">
+    <div class="auth-intro">
+      <span class="eyebrow">Join the food rescue network</span>
+      <h1>Every meal deserves to reach someone.</h1>
+      <p>
+        Sign in or create an account to connect with the ShareServe AI network.
+        Choose the role that best describes how you want to participate.
+      </p>
+
+      <div class="auth-points">
+        <div><span class="auth-check">✓</span> Donors can share surplus food</div>
+        <div><span class="auth-check">✓</span> NGOs can post food requirements</div>
+        <div><span class="auth-check">✓</span> Volunteers can support pickups and delivery</div>
+      </div>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button id="signInTab" class="active" type="button"
+          onclick="setAuthMode('signin')">Sign In</button>
+        <button id="signUpTab" type="button"
+          onclick="setAuthMode('signup')">Sign Up</button>
+      </div>
+
+      <h2 id="authTitle">Welcome back</h2>
+      <p id="authSubtitle" class="sub">
+        Enter your details and select your role to continue.
+      </p>
+
+      <form id="authForm" class="auth-form" onsubmit="handleAuth(event)">
+        <div id="nameField" class="hidden">
+          <label for="authName">Full Name / Organization Name</label>
+          <input id="authName" type="text"
+            placeholder="Enter your name or organization" autocomplete="name"/>
+        </div>
+
+        <label for="authEmail">Email Address</label>
+        <input id="authEmail" type="email"
+          placeholder="you@example.com" required autocomplete="email"/>
+
+        <label for="authPassword">Password</label>
+        <input id="authPassword" type="password"
+          placeholder="Enter password" minlength="6" required
+          autocomplete="current-password"/>
+
+        <div id="confirmPasswordField" class="hidden">
+          <label for="authConfirmPassword">Confirm Password</label>
+          <input id="authConfirmPassword" type="password"
+            placeholder="Re-enter password" minlength="6"
+            autocomplete="new-password"/>
+        </div>
+
+        <label for="authRole">Select Your Role</label>
+        <select id="authRole" required>
+          <option value="donor">Food Donor (Restaurant / Hotel / Individual)</option>
+          <option value="ngo">NGO / Shelter / Community Kitchen</option>
+          <option value="volunteer">Volunteer / Delivery Partner</option>
+          <option value="admin">Operations Admin (Demo Access)</option>
+        </select>
+
+        <div id="authError" class="auth-error" aria-live="polite"></div>
+
+        <button id="authSubmit" class="btn primary auth-submit" type="submit">
+          Sign In & Continue
+        </button>
+      </form>
+
+      <p class="auth-switch">
+        <span id="authSwitchText">New to ShareServe AI?</span>
+        <button id="authSwitchButton" type="button"
+          onclick="setAuthMode('signup')">Create an account</button>
+      </p>
+
+      <div class="notice auth-note">
+        Demo prototype: authentication is simulated for demonstration.
+        Do not enter a real password or sensitive information.
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- APPLICATION DASHBOARD -->
+<div id="app" class="app hidden">
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">S</div>
+        ShareServe
+      </div>
+
+      <div id="roleBadge" class="role-badge">DONOR</div>
+
+      <div class="menu" id="sideMenu">
+      <button onclick="showView('overview',this)">Overview</button>
+      <button id="requirementNav" onclick="showView('donation',this)">Post Donation</button>
+      <button id="matchingNav" onclick="showView('matching',this)">AI Matching</button>
+      <button onclick="showView('allocation',this)">Allocation</button>
+      <button onclick="showView('tracking',this)">Tracking</button>
+      </div>
+
+      <button class="btn outline"
+        style="margin-top:22px;width:100%;background:#173123;color:#fff;border-color:#294937"
+        onclick="logout()">Log out</button>
+    </aside>
+
+    <main class="main">
+      <div class="top">
+        <div>
+          <span class="tag">● Live prototype</span>
+          <h2 id="pageTitle" style="margin-top:9px">Overview</h2>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="avatar" id="avatar">GB</div>
+          <div>
+            <strong id="userName">Green Bowl Restaurant</strong><br>
+            <small id="userMeta" style="color:var(--muted)">Food Donor • Salt Lake</small>
+          </div>
+        </div>
+      </div>
+
+      <div id="overviewView"></div>
+
+<div id="donationView" class="hidden"></div>
+<div id="matchingView" class="hidden"></div>
+<div id="allocationView" class="hidden"></div>
+
+<div id="pickupView" class="hidden"></div>
+<div id="deliveryView" class="hidden"></div>
+<div id="paymentsView" class="hidden"></div>
+
+<div id="trackingView" class="hidden"></div>
+    </main>
+  </div>
+</div>
+
+<script>
+const roles={
+  donor:{
+    badge:'FOOD DONOR',
+    name:'Green Bowl Restaurant',
+    meta:'Food Donor • Salt Lake',
+    av:'GB'
+  },
+  ngo:{
+    badge:'NGO / SHELTER',
+    name:'Hope Shelter',
+    meta:'NGO • Kolkata',
+    av:'HS'
+  },
+  volunteer:{
+    badge:'VOLUNTEER',
+    name:'Community Volunteer',
+    meta:'Volunteer • Kolkata',
+    av:'CV'
+  },
+  admin:{
+    badge:'OPERATIONS ADMIN',
+    name:'ShareServe Operations',
+    meta:'Food Rescue Control Center',
+    av:'SA'
+  }
+};
+
+// Demo NGO data for donor-side allocation
+const ngos=[
+  {
+    name:'Hope Shelter',
+    distance:2.1,
+    need:50,
+    urgency:'High',
+    score:94,
+    weight:50
+  },
+  {
+    name:'Seva Kitchen',
+    distance:3.4,
+    need:30,
+    urgency:'Medium',
+    score:89,
+    weight:30
+  },
+  {
+    name:'Care Home',
+    distance:5.0,
+    need:20,
+    urgency:'Medium',
+    score:82,
+    weight:20
+  }
+];
+
+let authMode='signin';
+let currentRole='donor';
+let activeDonation=null;
+let activeRequirement=null;
+let currentAllocations=[];
+
+// Keep all compatible donor candidates separate from confirmed allocations.
+let donorMatches=[];
+let donorMatchesConfirmed=false;
+
+// Demo food donor inventory
+const foodDonors=[
+  {
+    name:'Green Bowl Restaurant',
+    foodType:'Vegetarian Meals',
+    meals:80,
+    distance:1.8,
+    location:'Salt Lake, Kolkata',
+    freshness:'Prepared 30 minutes ago'
+  },
+  {
+    name:'Lakeview Banquet Hall',
+    foodType:'Vegetarian Meals',
+    meals:120,
+    distance:3.2,
+    location:'Sector V, Kolkata',
+    freshness:'Prepared 45 minutes ago'
+  },
+  {
+    name:'Royal Orchid Wedding Hall',
+    foodType:'Vegetarian Meals',
+    meals:60,
+    distance:4.6,
+    location:'New Town, Kolkata',
+    freshness:'Prepared 1 hour ago'
+  },
+  {
+    name:'Spice Route Restaurant',
+    foodType:'Non-Vegetarian Meals',
+    meals:75,
+    distance:2.4,
+    location:'Salt Lake, Kolkata',
+    freshness:'Prepared 25 minutes ago'
+  },
+  {
+    name:'The Grand Celebration Banquet',
+    foodType:'Non-Vegetarian Meals',
+    meals:150,
+    distance:5.1,
+    location:'Rajarhat, Kolkata',
+    freshness:'Prepared 40 minutes ago'
+  },
+  {
+    name:'City Caterers & Events',
+    foodType:'Non-Vegetarian Meals',
+    meals:45,
+    distance:3.7,
+    location:'Bidhannagar, Kolkata',
+    freshness:'Prepared 1 hour ago'
+  }
+];
+
+let totalMealsPosted=0;
+let donationCount=0;
+let ngosMatchedThisSession=new Set();
+// DELIVERY PARTNER DATA
+
+function getDateKey(daysAgo=0){
+  const date=new Date();
+  date.setDate(date.getDate()-daysAgo);
+
+  const year=date.getFullYear();
+  const month=String(date.getMonth()+1).padStart(2,'0');
+  const day=String(date.getDate()).padStart(2,'0');
+
+  return `${year}-${month}-${day}`;
+}
+
+let deliveryJobs=[
+  {
+    id:101,
+    donor:'Green Bowl Restaurant',
+    pickupAddress:'Salt Lake, Kolkata',
+    ngo:'Hope Shelter',
+    dropAddress:'Sector V, Kolkata',
+    meals:50,
+    routeKm:3.5,
+    pickupTime:'10:30 AM',
+    eta:'11:00 AM',
+    date:getDateKey(0),
+    status:'delivered'
+  },
+  {
+    id:102,
+    donor:'Lakeview Banquet Hall',
+    pickupAddress:'Sector V, Kolkata',
+    ngo:'Seva Kitchen',
+    dropAddress:'Bidhannagar, Kolkata',
+    meals:40,
+    routeKm:7,
+    pickupTime:'12:00 PM',
+    eta:'12:45 PM',
+    date:getDateKey(0),
+    status:'picked_up'
+  },
+  {
+    id:103,
+    donor:'Royal Orchid Wedding Hall',
+    pickupAddress:'New Town, Kolkata',
+    ngo:'Care Home',
+    dropAddress:'Rajarhat, Kolkata',
+    meals:30,
+    routeKm:8,
+    pickupTime:'2:00 PM',
+    eta:'2:50 PM',
+    date:getDateKey(0),
+    status:'pending_pickup'
+  },
+  {
+    id:104,
+    donor:'Spice Route Restaurant',
+    pickupAddress:'Salt Lake, Kolkata',
+    ngo:'Hope Shelter',
+    dropAddress:'Salt Lake, Kolkata',
+    meals:25,
+    routeKm:2,
+    pickupTime:'4:00 PM',
+    eta:'4:30 PM',
+    date:getDateKey(0),
+    status:'pending_pickup'
+  },
+  {
+    id:105,
+    donor:'City Caterers & Events',
+    pickupAddress:'Bidhannagar, Kolkata',
+    ngo:'Seva Kitchen',
+    dropAddress:'Sector V, Kolkata',
+    meals:35,
+    routeKm:6,
+    pickupTime:'11:00 AM',
+    eta:'11:40 AM',
+    date:getDateKey(2),
+    status:'delivered'
+  },
+  {
+    id:106,
+    donor:'Green Bowl Restaurant',
+    pickupAddress:'Salt Lake, Kolkata',
+    ngo:'Care Home',
+    dropAddress:'New Town, Kolkata',
+    meals:20,
+    routeKm:9,
+    pickupTime:'1:00 PM',
+    eta:'1:50 PM',
+    date:getDateKey(8),
+    status:'delivered'
+  }
+];
+
+// Payment: ₹30 per pickup + ₹30 per delivery.
+// Extra distance beyond 5 km: ₹15 per additional km.
+
+function calculateJobPayment(job){
+  const basePayment=60;
+  const extraDistance=Math.max(0,job.routeKm-5);
+  const extraPayment=extraDistance*15;
+
+  return basePayment+extraPayment;
+}
+
+function getCompletedJobs(){
+  return deliveryJobs.filter(job=>job.status==='delivered');
+}
+
+function getEarnings(days){
+  const today=new Date();
+  const start=new Date(today);
+  start.setDate(today.getDate()-days+1);
+  start.setHours(0,0,0,0);
+
+  return getCompletedJobs()
+    .filter(job=>{
+      const jobDate=new Date(job.date+'T00:00:00');
+      return jobDate>=start && jobDate<=today;
+    })
+    .reduce((sum,job)=>sum+calculateJobPayment(job),0);
+}
+
+function getTodayJobs(){
+  return deliveryJobs.filter(job=>job.date===getDateKey(0));
+}
+
+function getStatusLabel(status){
+  if(status==='delivered') return 'Delivered';
+  if(status==='picked_up') return 'Picked Up';
+  return 'Pending Pickup';
+}
+
+function getStatusClass(status){
+  if(status==='delivered') return 'tag';
+  if(status==='picked_up') return 'tag blue';
+  return 'tag orange';
+}
+
+function openAuth(mode){
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('authPage').classList.remove('hidden');
+  setAuthMode(mode);
+}
+
+function backHome(){
+  document.getElementById('authPage').classList.add('hidden');
+  document.getElementById('landing').classList.remove('hidden');
+}
+
+function setAuthMode(mode){
+  authMode=mode;
+  const signup=mode==='signup';
+
+  document.getElementById('signInTab').classList.toggle('active',!signup);
+  document.getElementById('signUpTab').classList.toggle('active',signup);
+  document.getElementById('nameField').classList.toggle('hidden',!signup);
+  document.getElementById('confirmPasswordField').classList.toggle('hidden',!signup);
+
+  document.getElementById('authName').required=signup;
+  document.getElementById('authConfirmPassword').required=signup;
+
+  document.getElementById('authTitle').textContent=
+    signup?'Create your account':'Welcome back';
+
+  document.getElementById('authSubtitle').textContent=signup
+    ?'Register with ShareServe AI and select how you want to participate.'
+    :'Enter your details and select your role to continue.';
+
+  document.getElementById('authSubmit').textContent=
+    signup?'Create Account & Continue':'Sign In & Continue';
+
+  document.getElementById('authSwitchText').textContent=
+    signup?'Already have an account?':'New to ShareServe AI?';
+
+  document.getElementById('authSwitchButton').textContent=
+    signup?'Sign in':'Create an account';
+
+  document.getElementById('authSwitchButton').onclick=
+    ()=>setAuthMode(signup?'signin':'signup');
+
+  const adminOption=document.querySelector('#authRole option[value="admin"]');
+  adminOption.disabled=signup;
+  adminOption.textContent=signup
+    ?'Operations Admin (Sign in only)'
+    :'Operations Admin (Demo Access)';
+
+  if(signup && document.getElementById('authRole').value==='admin'){
+    document.getElementById('authRole').value='donor';
+  }
+
+  document.getElementById('authError').textContent='';
+}
+
+function handleAuth(event){
+  event.preventDefault();
+
+  const name=document.getElementById('authName').value.trim();
+  const email=document.getElementById('authEmail').value.trim();
+  const password=document.getElementById('authPassword').value;
+  const confirmPassword=document.getElementById('authConfirmPassword').value;
+  const role=document.getElementById('authRole').value;
+  const error=document.getElementById('authError');
+
+  if(authMode==='signup' && !name){
+    error.textContent='Please enter your name or organization name.';
+    return;
+  }
+
+  if(authMode==='signup' && password!==confirmPassword){
+    error.textContent='Passwords do not match. Please try again.';
+    return;
+  }
+
+  if(authMode==='signup' && role==='admin'){
+    error.textContent='Admin accounts are available through demo sign-in only.';
+    return;
+  }
+
+  const displayName=authMode==='signup'?name:roles[role].name;
+  enterDashboard(role,displayName,email);
+}
+
+function enterDashboard(role,displayName,email){
+  currentRole=role;
+
+  const profile=roles[role];
+
+  document.getElementById('roleBadge').textContent=profile.badge;
+  document.getElementById('userName').textContent=displayName || profile.name;
+  document.getElementById('userMeta').textContent=profile.meta;
+
+  document.getElementById('avatar').textContent=
+    (displayName || profile.av)
+    .split(/\s+/)
+    .map(x=>x[0])
+    .join('')
+    .slice(0,2)
+    .toUpperCase();
+
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('authPage').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+
+  const menu=document.getElementById('sideMenu');
+
+  if(role==='volunteer'){
+
+    menu.innerHTML=`
+      <button onclick="showView('overview',this)">Overview</button>
+      <button onclick="showView('pickup',this)">Pickup</button>
+      <button onclick="showView('delivery',this)">Delivery</button>
+      <button onclick="showView('payments',this)">Payments</button>
+      <button onclick="showView('tracking',this)">Tracking</button>
+    `;
+
+  }else{
+
+    menu.innerHTML=`
+      <button onclick="showView('overview',this)">Overview</button>
+      <button id="requirementNav" onclick="showView('donation',this)">Post Donation</button>
+      <button id="matchingNav" onclick="showView('matching',this)">AI Matching</button>
+      <button onclick="showView('allocation',this)">Allocation</button>
+      <button onclick="showView('tracking',this)">Tracking</button>
+    `;
+
+    document.getElementById('requirementNav').textContent=
+      role==='ngo'?'Post Requirement':'Post Donation';
+
+    document.getElementById('matchingNav').textContent=
+      role==='ngo'?'Food Matching':'AI Matching';
+  }
+
+  renderAll(role);
+
+  const firstButton=menu.querySelector('button');
+
+  if(role==='donor' || role==='ngo'){
+    showView('donation',menu.querySelectorAll('button')[1]);
+  }else{
+    showView('overview',firstButton);
+  }
+}
+
+function logout(){
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('authPage').classList.add('hidden');
+  document.getElementById('landing').classList.remove('hidden');
+}
+
+function showView(name,button){
+
+  const allViews=[
+    'overview',
+    'donation',
+    'matching',
+    'allocation',
+    'pickup',
+    'delivery',
+    'payments',
+    'tracking'
+  ];
+
+  allViews.forEach(view=>{
+    const element=document.getElementById(view+'View');
+    if(element) element.classList.add('hidden');
+  });
+
+  document.getElementById(name+'View').classList.remove('hidden');
+
+  document.querySelectorAll('.menu button')
+    .forEach(btn=>btn.classList.remove('active'));
+
+  if(button) button.classList.add('active');
+
+  const labels={
+    overview:'Overview',
+    donation:currentRole==='ngo'?'Post Requirement':'Post Donation',
+    matching:currentRole==='ngo'?'Food Matching':'AI Matching',
+    allocation:'Allocation',
+    pickup:'Pickup Management',
+    delivery:'Delivery Management',
+    payments:'Payments & Earnings',
+    tracking:'Tracking Dashboard'
+  };
+
+  document.getElementById('pageTitle').textContent=labels[name] || name;
+}
+
+function renderAll(role){
+
+  renderOverview(role);
+
+  if(role==='volunteer'){
+    renderDeliveryPartnerPages();
+    renderTracking();
+    return;
+  }
+
+  renderDonation(role);
+  renderMatching();
+  renderAllocation();
+  renderTracking();
+
+}
+
+function renderDeliveryOverview(){
+
+  const host=document.getElementById('overviewView');
+
+  const jobs=getTodayJobs();
+
+  const completed=jobs.filter(j=>j.status==='delivered').length;
+  const pending=jobs.filter(j=>j.status!=='delivered').length;
+  const picked=jobs.filter(j=>j.status==='picked_up').length;
+
+  const todayEarnings=getEarnings(1);
+  const weeklyEarnings=getEarnings(7);
+
+  host.innerHTML=`
+
+    <div class="kpis">
+
+      <div class="kpi">
+        <small>Deliveries Today</small>
+        <strong>${jobs.length}</strong>
+      </div>
+
+      <div class="kpi">
+        <small>Completed Deliveries</small>
+        <strong>${completed}</strong>
+      </div>
+
+      <div class="kpi">
+        <small>Pending Deliveries</small>
+        <strong>${pending}</strong>
+      </div>
+
+      <div class="kpi">
+        <small>Today's Earnings</small>
+        <strong>₹${todayEarnings}</strong>
+      </div>
+
+    </div>
+
+    <div class="kpis">
+
+      <div class="kpi">
+        <small>Pickups Completed</small>
+        <strong>${picked+completed}</strong>
+      </div>
+
+      <div class="kpi">
+        <small>Weekly Earnings</small>
+        <strong>₹${weeklyEarnings}</strong>
+      </div>
+
+      <div class="kpi">
+        <small>Monthly Earnings</small>
+        <strong>₹${getEarnings(30)}</strong>
+      </div>
+
+      <div class="kpi">
+        <small>Available Tasks</small>
+        <strong>${jobs.filter(j=>j.status==='pending_pickup').length}</strong>
+      </div>
+
+    </div>
+
+    <div class="panel">
+
+      <h3>Today's Assigned Deliveries</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Food Donor</th>
+            <th>Destination NGO</th>
+            <th>Meals</th>
+            <th>Distance</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${jobs.map(job=>`
+            <tr>
+              <td>${escapeHTML(job.donor)}</td>
+              <td>${escapeHTML(job.ngo)}</td>
+              <td>${job.meals}</td>
+              <td>${job.routeKm} km</td>
+              <td>
+                <span class="${getStatusClass(job.status)}">
+                  ${getStatusLabel(job.status)}
+                </span>
+              </td>
+            </tr>
+          `).join('')}
+
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="panel">
+
+      <h3>Delivery Partner Performance</h3>
+
+      <p style="color:var(--muted)">
+        Keep track of your completed tasks, pending deliveries and earnings.
+      </p>
+
+      <button class="btn primary"
+        onclick="showView('pickup',document.querySelectorAll('.menu button')[1])">
+        View Pickup Tasks
+      </button>
+
+      <button class="btn outline"
+        onclick="showView('delivery',document.querySelectorAll('.menu button')[2])">
+        View Deliveries
+      </button>
+
+    </div>
+  `;
+}
+
+function renderPickupPage(){
+
+  const host=document.getElementById('pickupView');
+
+  const jobs=getTodayJobs();
+
+  host.innerHTML=`
+
+    <div class="panel">
+
+      <h3>Assigned Food Pickups</h3>
+
+      <p style="color:var(--muted)">
+        View the food collection details, donor locations and pickup schedules.
+      </p>
+
+      <div class="kpis">
+
+        <div class="kpi">
+          <small>Total Pickups</small>
+          <strong>${jobs.length}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Completed</small>
+          <strong>${jobs.filter(j=>j.status==='picked_up'||j.status==='delivered').length}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Pending</small>
+          <strong>${jobs.filter(j=>j.status==='pending_pickup').length}</strong>
+        </div>
+
+      </div>
+
+      ${jobs.map(job=>`
+
+        <div class="panel">
+
+          <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+
+            <h3>Pickup #${job.id}</h3>
+
+            <span class="${getStatusClass(job.status)}">
+              ${getStatusLabel(job.status)}
+            </span>
+
+          </div>
+
+          <p><b>Food Donor:</b> ${escapeHTML(job.donor)}</p>
+
+          <p><b>Pickup Address:</b> ${escapeHTML(job.pickupAddress)}</p>
+
+          <p><b>Destination NGO:</b> ${escapeHTML(job.ngo)}</p>
+
+          <p><b>Delivery Address:</b> ${escapeHTML(job.dropAddress)}</p>
+
+          <p><b>Food Quantity:</b> ${job.meals} meals</p>
+
+          <p><b>Scheduled Pickup:</b> ${job.pickupTime}</p>
+
+          <p><b>Route Distance:</b> ${job.routeKm} km</p>
+
+          ${
+            job.status==='pending_pickup'
+            ?`<button class="btn primary" onclick="updateDeliveryStatus(${job.id},'picked_up')">
+                Mark Pickup Completed
+              </button>`
+            :`<button class="btn outline" disabled>
+                Pickup Completed
+              </button>`
+          }
+
+        </div>
+
+      `).join('')}
+
+    </div>
+  `;
+}
+
+function renderDeliveryPage(){
+
+  const host=document.getElementById('deliveryView');
+
+  const jobs=getTodayJobs();
+
+  host.innerHTML=`
+
+    <div class="panel">
+
+      <h3>Assigned Food Deliveries</h3>
+
+      <p style="color:var(--muted)">
+        Deliver the collected food to the assigned NGO or community kitchen.
+      </p>
+
+      <div class="kpis">
+
+        <div class="kpi">
+          <small>Total Deliveries</small>
+          <strong>${jobs.length}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Delivered</small>
+          <strong>${jobs.filter(j=>j.status==='delivered').length}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Awaiting Delivery</small>
+          <strong>${jobs.filter(j=>j.status==='picked_up').length}</strong>
+        </div>
+
+      </div>
+
+      ${jobs.map(job=>`
+
+        <div class="panel">
+
+          <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+
+            <h3>Delivery #${job.id}</h3>
+
+            <span class="${getStatusClass(job.status)}">
+              ${getStatusLabel(job.status)}
+            </span>
+
+          </div>
+
+          <p><b>Food Donor:</b> ${escapeHTML(job.donor)}</p>
+
+          <p><b>Pickup Location:</b> ${escapeHTML(job.pickupAddress)}</p>
+
+          <p><b>NGO / Recipient:</b> ${escapeHTML(job.ngo)}</p>
+
+          <p><b>Delivery Destination:</b> ${escapeHTML(job.dropAddress)}</p>
+
+          <p><b>Number of Meals:</b> ${job.meals}</p>
+
+          <p><b>Scheduled Time:</b> ${job.pickupTime}</p>
+
+          <p><b>Estimated Arrival:</b> ${job.eta}</p>
+
+          <p><b>Route Distance:</b> ${job.routeKm} km</p>
+
+          ${
+            job.status==='picked_up'
+            ?`<button class="btn primary" onclick="updateDeliveryStatus(${job.id},'delivered')">
+                Mark Delivery Completed
+              </button>`
+            :job.status==='delivered'
+            ?`<button class="btn outline" disabled>
+                Successfully Delivered
+              </button>`
+            :`<button class="btn outline" disabled>
+                Complete Pickup First
+              </button>`
+          }
+
+        </div>
+
+      `).join('')}
+
+    </div>
+  `;
+}
+
+function updateDeliveryStatus(id,newStatus){
+
+  const job=deliveryJobs.find(j=>j.id===id);
+
+  if(!job)return;
+
+  if(newStatus==='delivered' && job.status!=='picked_up'){
+    alert('Please complete the pickup first.');
+    return;
+  }
+
+  job.status=newStatus;
+
+  renderDeliveryPartnerPages();
+  renderOverview('volunteer');
+  renderTracking();
+
+  alert(
+    newStatus==='picked_up'
+    ?'Pickup successfully completed!'
+    :'Delivery successfully completed! Payment has been added to your earnings.'
+  );
+}
+
+function renderPaymentsPage(){
+
+  const host=document.getElementById('paymentsView');
+
+  const completed=getCompletedJobs();
+
+  const today=getEarnings(1);
+  const weekly=getEarnings(7);
+  const monthly=getEarnings(30);
+
+  host.innerHTML=`
+
+    <div class="panel">
+
+      <h3>Payments & Earnings</h3>
+
+      <p style="color:var(--muted)">
+        Your earnings are calculated based on completed pickup and delivery tasks.
+      </p>
+
+      <div class="kpis">
+
+        <div class="kpi">
+          <small>Today's Earnings</small>
+          <strong>₹${today}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Weekly Earnings</small>
+          <strong>₹${weekly}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Monthly Earnings</small>
+          <strong>₹${monthly}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Total Completed Tasks</small>
+          <strong>${completed.length}</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel">
+
+      <h3>Payment Structure</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Payment</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Food Pickup</td>
+            <td>₹30</td>
+          </tr>
+
+          <tr>
+            <td>Food Delivery</td>
+            <td>₹30</td>
+          </tr>
+
+          <tr>
+            <td>Extra Distance Beyond 5 km</td>
+            <td>₹15 per km</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice">
+        A completed pickup and delivery within 5 km earns ₹60.
+        Additional distance is charged at ₹15 per km beyond 5 km.
+        Payment is credited only after successful delivery.
+      </div>
+
+    </div>
+
+    <div class="panel">
+
+      <h3>Completed Task Payment History</h3>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Task ID</th>
+            <th>NGO</th>
+            <th>Distance</th>
+            <th>Base Pay</th>
+            <th>Extra Pay</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${completed.map(job=>{
+
+            const extra=Math.max(0,job.routeKm-5)*15;
+            const total=calculateJobPayment(job);
+
+            return `
+              <tr>
+                <td>#${job.id}</td>
+                <td>${escapeHTML(job.ngo)}</td>
+                <td>${job.routeKm} km</td>
+                <td>₹60</td>
+                <td>₹${extra}</td>
+                <td><b>₹${total}</b></td>
+              </tr>
+            `;
+
+          }).join('') || `
+            <tr>
+              <td colspan="6">No completed deliveries yet.</td>
+            </tr>
+          `}
+
+        </tbody>
+
+      </table>
+
+    </div>
+  `;
+}
+
+function renderDeliveryTracking(){
+
+  const host=document.getElementById('trackingView');
+
+  const completed=getCompletedJobs();
+  const todayJobs=getTodayJobs();
+
+  const weekly=getEarnings(7);
+  const monthly=getEarnings(30);
+
+  const totalCompleted=completed.length;
+
+  const totalDistance=completed.reduce(
+    (sum,job)=>sum+job.routeKm,0
+  );
+
+  const weeklyJobs=completed.filter(job=>{
+    const date=new Date(job.date+'T00:00:00');
+    const start=new Date();
+    start.setDate(start.getDate()-6);
+    start.setHours(0,0,0,0);
+    return date>=start;
+  });
+
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  const weeklyBars=days.map((day,index)=>{
+
+    const date=new Date();
+    date.setDate(date.getDate()-(6-index));
+
+    const key=getDateKey(6-index);
+
+    const amount=completed
+      .filter(job=>job.date===key)
+      .reduce((sum,job)=>sum+calculateJobPayment(job),0);
+
+    return {day,amount};
+
+  });
+
+  const maxEarning=Math.max(
+    1,...weeklyBars.map(x=>x.amount)
+  );
+
+  host.innerHTML=`
+
+    <div class="panel">
+
+      <h3>Delivery Performance Dashboard</h3>
+
+      <div class="kpis">
+
+        <div class="kpi">
+          <small>Total Deliveries Completed</small>
+          <strong>${totalCompleted}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Today's Pending Tasks</small>
+          <strong>${todayJobs.filter(j=>j.status!=='delivered').length}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Total Distance Covered</small>
+          <strong>${totalDistance.toFixed(1)} km</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Weekly Earnings</small>
+          <strong>₹${weekly}</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel">
+
+      <h3>Weekly Earnings</h3>
+
+      <p style="color:var(--muted)">
+        Earnings from successfully completed deliveries over the last 7 days.
+      </p>
+
+      ${weeklyBars.map(item=>`
+
+        <div style="margin:18px 0">
+
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+
+            <b>${item.day}</b>
+            <b>₹${item.amount}</b>
+
+          </div>
+
+          <div class="progress">
+            <span style="width:${item.amount/maxEarning*100}%"></span>
+          </div>
+
+        </div>
+
+      `).join('')}
+
+    </div>
+
+    <div class="panel">
+
+      <h3>Monthly Earnings Summary</h3>
+
+      <div class="kpis">
+
+        <div class="kpi">
+          <small>Monthly Earnings</small>
+          <strong>₹${monthly}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Completed This Week</small>
+          <strong>${weeklyJobs.length}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Completed This Month</small>
+          <strong>${completed.filter(job=>{
+            const date=new Date(job.date+'T00:00:00');
+            const start=new Date();
+            start.setDate(start.getDate()-29);
+            start.setHours(0,0,0,0);
+            return date>=start;
+          }).length}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Pending Tasks Today</small>
+          <strong>${todayJobs.filter(j=>j.status!=='delivered').length}</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel">
+
+      <h3>Delivery History</h3>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Task ID</th>
+            <th>Donor</th>
+            <th>NGO</th>
+            <th>Distance</th>
+            <th>Status</th>
+            <th>Payment</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${deliveryJobs.map(job=>`
+
+            <tr>
+              <td>#${job.id}</td>
+              <td>${escapeHTML(job.donor)}</td>
+              <td>${escapeHTML(job.ngo)}</td>
+              <td>${job.routeKm} km</td>
+              <td>
+                <span class="${getStatusClass(job.status)}">
+                  ${getStatusLabel(job.status)}
+                </span>
+              </td>
+              <td>
+                ${job.status==='delivered'
+                  ?'₹'+calculateJobPayment(job)
+                  :'Pending'}
+              </td>
+            </tr>
+
+          `).join('')}
+
+        </tbody>
+
+      </table>
+
+    </div>
+  `;
+}
+
+function renderDeliveryPartnerPages(){
+
+  renderPickupPage();
+  renderDeliveryPage();
+  renderPaymentsPage();
+
+}
+
+function renderOverview(role){
+  const host=document.getElementById('overviewView');
+  if(role==='volunteer'){
+  renderDeliveryOverview();
+  return;
+}
+
+  if(role==='donor'){
+    if(!activeDonation){
+      host.innerHTML=`
+        <div class="panel">
+          <h3>No donation posted yet</h3>
+          <p style="color:var(--muted)">
+            Post your surplus food to see live AI matches,
+            allocation and tracking details here.
+          </p>
+        </div>`;
+      return;
+    }
+
+    host.innerHTML=`
+      <div class="kpis">
+        <div class="kpi">
+          <small>Current donation</small>
+          <strong>${activeDonation.quantity}</strong>
+        </div>
+        <div class="kpi">
+          <small>NGOs matched</small>
+          <strong>${currentAllocations.filter(x=>x.meals>0).length}</strong>
+        </div>
+        <div class="kpi">
+          <small>Meals allocated</small>
+          <strong>${sumAllocated()}</strong>
+        </div>
+        <div class="kpi">
+          <small>Unallocated</small>
+          <strong>${activeDonation.quantity-sumAllocated()}</strong>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Latest donation</h3>
+        <p><b>${escapeHTML(activeDonation.quantity+' '+activeDonation.foodType)}</b></p>
+        <p style="color:var(--muted)">
+          ${escapeHTML(activeDonation.location)}
+          • Prepared ${escapeHTML(activeDonation.preparedAt)}
+          • Usable for ${escapeHTML(activeDonation.usabilityWindow)}
+        </p>
+        <p>${escapeHTML(activeDonation.notes || 'No additional notes.')}</p>
+      </div>`;
+  }else{
+    if(role==='ngo' && activeRequirement){
+      const received=currentAllocations.reduce((sum,d)=>sum+d.meals,0);
+
+      host.innerHTML=`
+        <div class="kpis">
+          <div class="kpi">
+            <small>Meals Required</small>
+            <strong>${activeRequirement.quantity}</strong>
+          </div>
+          <div class="kpi">
+            <small>Meals Received</small>
+            <strong>${received}</strong>
+          </div>
+          <div class="kpi">
+            <small>Food Type</small>
+            <strong style="font-size:18px">
+              ${escapeHTML(activeRequirement.foodType)}
+            </strong>
+          </div>
+          <div class="kpi">
+            <small>Urgency</small>
+            <strong>${escapeHTML(activeRequirement.urgency)}</strong>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Current food requirement</h3>
+          <p>
+            <b>${activeRequirement.quantity} ${escapeHTML(activeRequirement.foodType)}</b>
+          </p>
+          <p style="color:var(--muted)">
+            ${escapeHTML(activeRequirement.location)}
+            • ${escapeHTML(activeRequirement.requiredBy)}
+          </p>
+          <p>${escapeHTML(activeRequirement.notes||'No additional requirements.')}</p>
+        </div>`;
+      return;
+    }
+
+    const cards=role==='ngo'
+      ?[['—','Meals Required'],['—','Meals Received'],['—','Food Type'],['—','Urgency']]
+      :role==='admin'
+      ?[['230','Meals rescued'],['7','NGOs active'],['5','Donors active'],['92%','Allocation rate']]
+      :[['3','Pickups nearby'],['2','Deliveries today'],['8.4 km','Assigned route'],['12','Meals to deliver']];
+
+    host.innerHTML=`
+      <div class="kpis">
+        ${cards.map(x=>`
+          <div class="kpi">
+            <small>${x[1]}</small>
+            <strong>${x[0]}</strong>
+          </div>`).join('')}
+      </div>
+
+      <div class="panel">
+        <h3>ShareServe dashboard</h3>
+        <p style="color:var(--muted)">
+          Use the navigation to view food requirements, donor matches,
+          allocation and delivery tracking.
+        </p>
+      </div>`;
+  }
+}
+
+function renderDonation(role){
+  const host=document.getElementById('donationView');
+
+  if(role==='ngo'){
+    host.innerHTML=`
+      <div class="panel">
+        <h3>Post Food Requirement</h3>
+        <p style="color:var(--muted)">
+          Tell nearby restaurants, banquet halls and caterers what your
+          community kitchen needs. Your details will be used throughout
+          matching, allocation and delivery tracking.
+        </p>
+
+        <form class="form" onsubmit="submitRequirement(event)">
+          <label for="requirementType">Required food type</label>
+          <select id="requirementType" required>
+            <option>Vegetarian Meals</option>
+            <option>Non-Vegetarian Meals</option>
+          </select>
+
+          <label for="requirementQuantity">Number of meals required</label>
+          <input id="requirementQuantity" type="number"
+            min="1" step="1" value="50" required/>
+
+          <label for="requirementLocation">Delivery location</label>
+          <input id="requirementLocation"
+            value="Salt Lake, Kolkata" required/>
+
+          <label for="requirementUrgency">Urgency</label>
+          <select id="requirementUrgency">
+            <option>High</option>
+            <option selected>Medium</option>
+            <option>Low</option>
+          </select>
+
+          <label for="requirementTime">Required by</label>
+          <select id="requirementTime">
+            <option>As soon as possible</option>
+            <option>Within 1 hour</option>
+            <option>Within 2 hours</option>
+            <option>Within 4 hours</option>
+          </select>
+
+          <label for="requirementNotes">Additional requirements</label>
+          <textarea id="requirementNotes"
+            placeholder="Mention dietary, packaging or delivery instructions"></textarea>
+
+          <button class="btn primary" type="submit">
+            Submit Food Requirement
+          </button>
+
+          <div id="requirementMsg" class="notice hidden"></div>
+        </form>
+      </div>`;
+    return;
+  }
+
+  host.innerHTML=`
+    <div class="panel">
+      <h3>Post Surplus Food</h3>
+      <p style="color:var(--muted)">
+        Enter the available food details. The AI will use the quantity
+        you enter to calculate NGO matches and meal allocation.
+      </p>
+
+      <form id="donationForm" class="form" onsubmit="postDonation(event)">
+        <label for="foodType">Kind of food</label>
+        <select id="foodType" onchange="toggleCustomFood()" required>
+          <option>Vegetarian Meals</option>
+          <option>Non-Vegetarian Meals</option>
+          <option>Packaged Food</option>
+          <option>Bakery Items</option>
+          <option>Fruits</option>
+          <option value="Other">Other / Custom</option>
+        </select>
+
+        <div id="customFoodWrap" class="hidden">
+          <label for="customFoodType">Enter food type</label>
+          <input id="customFoodType" placeholder="e.g. Fresh sandwiches"/>
+        </div>
+
+        <label for="foodQuantity">Number of meals / food packets</label>
+        <input id="foodQuantity" type="number"
+          min="1" step="1" value="100" required/>
+
+        <label for="preparedAt">Prepared / available since</label>
+        <select id="preparedAt">
+          <option>Just prepared</option>
+          <option>30 minutes ago</option>
+          <option selected>45 minutes ago</option>
+          <option>1 hour ago</option>
+          <option>2 hours ago</option>
+          <option>3 hours ago</option>
+        </select>
+
+        <label for="usabilityWindow">Estimated remaining usability time</label>
+        <select id="usabilityWindow">
+          <option>1 hour</option>
+          <option>2 hours</option>
+          <option selected>3 hours</option>
+          <option>4 hours</option>
+          <option>6 hours</option>
+        </select>
+
+        <label for="foodLocation">Pickup location</label>
+        <input id="foodLocation" value="Salt Lake, Kolkata" required/>
+
+        <label for="foodNotes">Additional details</label>
+        <textarea id="foodNotes"
+          placeholder="Describe the food, packaging or pickup instructions">Fresh vegetarian rice, dal and vegetables. Packed and ready for pickup.</textarea>
+
+        <button class="btn primary" type="submit">
+          Post Donation and Match
+        </button>
+
+        <div id="postMsg" class="notice hidden" aria-live="polite"></div>
+      </form>
+    </div>`;
+}
+
+function toggleCustomFood(){
+  const isOther=document.getElementById('foodType').value==='Other';
+
+  document.getElementById('customFoodWrap')
+    .classList.toggle('hidden',!isOther);
+
+  document.getElementById('customFoodType').required=isOther;
+}
+
+/* NGO REQUIREMENT SUBMISSION */
+
+function submitRequirement(event){
+  event.preventDefault();
+
+  const quantity=Number(
+    document.getElementById('requirementQuantity').value
+  );
+
+  if(!Number.isInteger(quantity)||quantity<1){
+    alert('Please enter a valid number of meals.');
+    return;
+  }
+
+  activeRequirement={
+    foodType:document.getElementById('requirementType').value,
+    quantity,
+    location:document.getElementById('requirementLocation').value.trim(),
+    urgency:document.getElementById('requirementUrgency').value,
+    requiredBy:document.getElementById('requirementTime').value,
+    notes:document.getElementById('requirementNotes').value.trim()
+  };
+
+  // Generate all compatible donor candidates.
+  donorMatches=calculateDonorMatches(activeRequirement);
+
+  // Clear old allocations when a new requirement is submitted.
+  currentAllocations=[];
+  donorMatchesConfirmed=false;
+
+  renderOverview('ngo');
+  renderMatching();
+  renderAllocation();
+  renderTracking();
+
+  const buttons=document.querySelectorAll('.menu button');
+  showView('matching',buttons[2]);
+}
+
+/* NGO DONOR MATCHING */
+
+function calculateDonorMatches(requirement){
+  return foodDonors
+    .filter(d=>d.foodType===requirement.foodType)
+    .map(d=>{
+      const distanceScore=Math.max(0,100-d.distance*8);
+
+      const quantityScore=Math.min(
+        100,
+        d.meals/Math.max(1,requirement.quantity)*100
+      );
+
+      const score=Math.min(
+        99,
+        Math.round(distanceScore*.5+quantityScore*.5)
+      );
+
+      return {
+        ...d,
+        score,
+        meals:0,
+        mealsAvailable:d.meals
+      };
+    })
+
+    // Nearest donor first. AI score breaks equal-distance ties.
+    .sort((a,b)=>a.distance-b.distance || b.score-a.score);
+}
+
+function finalizeDonorMatches(){
+  if(!activeRequirement || donorMatchesConfirmed)return;
+
+  let remaining=activeRequirement.quantity;
+  const selectedDonors=[];
+
+  /*
+    Take as much as possible from the nearest donor first.
+    Move to the next donor only if the previous donor cannot
+    fulfil the remaining quantity.
+    Stop immediately when the requirement is fulfilled.
+  */
+
+  for(const donor of donorMatches){
+    if(remaining<=0)break;
+
+    const mealsToAllocate=Math.min(
+      remaining,
+      donor.mealsAvailable
+    );
+
+    if(mealsToAllocate>0){
+      selectedDonors.push({
+        ...donor,
+        meals:mealsToAllocate
+      });
+
+      remaining-=mealsToAllocate;
+    }
+  }
+
+  currentAllocations=selectedDonors;
+  donorMatchesConfirmed=true;
+
+  renderOverview('ngo');
+  renderMatching();
+  renderAllocation();
+  renderTracking();
+
+  const buttons=document.querySelectorAll('.menu button');
+  showView('allocation',buttons[3]);
+}
+
+/* DONOR-SIDE NGO ALLOCATION */
+
+function calculateAllocations(quantity){
+  const totalWeight=ngos.reduce(
+    (sum,ngo)=>sum+ngo.weight,0
+  );
+
+  const rows=ngos.map((ngo,index)=>{
+    const exact=quantity*ngo.weight/totalWeight;
+
+    return {
+      ...ngo,
+      meals:Math.floor(exact),
+      remainder:exact-Math.floor(exact),
+      index
+    };
+  });
+
+  let remaining=quantity-rows.reduce(
+    (sum,row)=>sum+row.meals,0
+  );
+
+  [...rows]
+    .sort((a,b)=>b.remainder-a.remainder || a.index-b.index)
+    .slice(0,remaining)
+    .forEach(row=>row.meals++);
+
+  return rows.sort((a,b)=>b.score-a.score);
+}
+
+/* DONOR POST DONATION */
+
+function postDonation(event){
+  event.preventDefault();
+
+  const quantity=Number(
+    document.getElementById('foodQuantity').value
+  );
+
+  const selectedFood=document.getElementById('foodType').value;
+  const customFood=document.getElementById('customFoodType').value.trim();
+
+  if(!Number.isInteger(quantity)||quantity<1){
+    alert('Please enter a valid quantity of at least 1.');
+    return;
+  }
+
+  if(selectedFood==='Other'&&!customFood){
+    alert('Please enter the custom food type.');
+    return;
+  }
+
+  const foodType=selectedFood==='Other'
+    ?customFood
+    :selectedFood;
+
+  activeDonation={
+    quantity,
+    foodType,
+    preparedAt:document.getElementById('preparedAt').value,
+    usabilityWindow:document.getElementById('usabilityWindow').value,
+    location:document.getElementById('foodLocation').value.trim(),
+    notes:document.getElementById('foodNotes').value.trim(),
+    postedAt:new Date().toLocaleString()
+  };
+
+  currentAllocations=calculateAllocations(quantity);
+
+  totalMealsPosted+=quantity;
+  donationCount+=1;
+
+  currentAllocations
+    .filter(x=>x.meals>0)
+    .forEach(x=>ngosMatchedThisSession.add(x.name));
+
+  renderOverview(currentRole);
+  renderMatching();
+  renderAllocation();
+  renderTracking();
+
+  const msg=document.getElementById('postMsg');
+
+  msg.textContent=
+    `Donation posted: ${quantity} ${foodType}. AI matched `+
+    `${currentAllocations.filter(x=>x.meals>0).length} NGOs and `+
+    `allocated all ${quantity} meals.`;
+
+  msg.classList.remove('hidden');
+
+  setTimeout(()=>{
+    const buttons=document.querySelectorAll('.menu button');
+    showView('matching',buttons[2]);
+  },700);
+}
+
+function sumAllocated(){
+  return currentAllocations.reduce(
+    (sum,row)=>sum+row.meals,0
+  );
+}
+
+/* MATCHING PAGE */
+
+function renderMatching(){
+  const host=document.getElementById('matchingView');
+
+  // NGO VIEW
+  if(currentRole==='ngo'){
+    if(!activeRequirement){
+      host.innerHTML=`
+        <div class="panel">
+          <h3>No food requirement submitted</h3>
+          <p style="color:var(--muted)">
+            Post a requirement first to find nearby food donors.
+          </p>
+        </div>`;
+      return;
+    }
+
+    const rows=donorMatches;
+
+    const available=rows.reduce(
+      (sum,d)=>sum+d.mealsAvailable,0
+    );
+
+    const selectedNames=new Set(
+      currentAllocations.map(d=>d.name)
+    );
+
+    const status=donorMatchesConfirmed
+      ?`<div class="notice">
+          Donor matches confirmed.
+          ${sumAllocated()} of ${activeRequirement.quantity} meals have
+          been allocated
+          ${sumAllocated()<activeRequirement.quantity
+            ?`; ${activeRequirement.quantity-sumAllocated()} meals are still unreceived`
+            :''}.
+        </div>`
+      :`<p style="color:var(--muted)">
+          The system checks the nearest compatible donor first.
+          It uses the next donor only if the previous donor cannot
+          cover the remaining quantity.
+        </p>`;
+
+    host.innerHTML=`
+      <div class="panel">
+        <h3>Donor Matches</h3>
+
+        <p style="color:var(--muted)">
+          Finding ${activeRequirement.quantity}
+          ${escapeHTML(activeRequirement.foodType)}
+          for ${escapeHTML(activeRequirement.location)}.
+          Match score considers distance and available meal quantity.
+        </p>
+
+        ${status}
+
+        ${
+          rows.length
+          ?rows.map((d,i)=>`
+            <div class="match">
+              <div class="matchscore">${d.score}%</div>
+
+              <div>
+                <strong>#${i+1} ${escapeHTML(d.name)}</strong>
+
+                <div style="color:var(--muted)">
+                  Food type: ${escapeHTML(d.foodType)}
+                  • Distance: ${d.distance} km
+                  • Meals available: ${d.mealsAvailable}
+                </div>
+
+                <div style="color:var(--muted)">
+                  ${escapeHTML(d.freshness)}
+                  • ${escapeHTML(d.location)}
+                </div>
+
+                ${
+                  donorMatchesConfirmed&&selectedNames.has(d.name)
+                  ?`<span class="tag">
+                      Selected: ${currentAllocations.find(x=>x.name===d.name).meals}
+                      meals
+                    </span>`
+                  :''
+                }
+              </div>
+            </div>
+          `).join('')
+          :'<p>No compatible donors found for this food type.</p>'
+        }
+
+        ${
+          !donorMatchesConfirmed&&rows.length
+          ?`
+            <p style="color:var(--muted);margin-top:12px">
+              Total compatible meals available:
+              <b>${available}</b>
+              ${
+                available<activeRequirement.quantity
+                ?` — ${activeRequirement.quantity-available} meals cannot currently be covered.`
+                :''
+              }
+            </p>
+          `
+          :''
+        }
+
+        <button class="btn primary"
+          style="margin-top:16px"
+          onclick="finalizeDonorMatches()"
+          ${rows.length&&!donorMatchesConfirmed?'':'disabled'}>
+          ${donorMatchesConfirmed
+            ?'Donor Matches Confirmed'
+            :'Confirm Donor Matches'}
+        </button>
+      </div>`;
+
+    return;
+  }
+
+  // DONOR VIEW
+  if(!activeDonation){
+    host.innerHTML=`
+      <div class="panel">
+        <h3>No active donation</h3>
+        <p style="color:var(--muted)">
+          Post a donation first to generate matches.
+        </p>
+      </div>`;
+    return;
+  }
+
+  const rows=[...currentAllocations].sort(
+    (a,b)=>b.score-a.score
+  );
+
+  host.innerHTML=`
+    <div class="panel">
+      <h3>AI-ranked NGO matches</h3>
+
+      <p style="color:var(--muted)">
+        Matching for ${activeDonation.quantity}
+        ${escapeHTML(activeDonation.foodType)}
+        • ${escapeHTML(activeDonation.location)}.
+      </p>
+
+      ${rows.map((n,i)=>`
+        <div class="match">
+          <div class="matchscore">${n.score}%</div>
+
+          <div>
+            <strong>#${i+1} ${escapeHTML(n.name)}</strong>
+
+            <div style="color:var(--muted)">
+              ${n.distance} km • ${n.urgency} urgency
+              • ${n.meals} meals allocated
+            </div>
+
+            <span class="tag">Food compatibility</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+/* ALLOCATION PAGE */
+
+function renderAllocation(){
+  const host=document.getElementById('allocationView');
+
+  // NGO VIEW
+  if(currentRole==='ngo'){
+    if(!activeRequirement){
+      host.innerHTML=`
+        <div class="panel">
+          <h3>Allocation will appear here</h3>
+          <p style="color:var(--muted)">
+            Submit a food requirement and confirm donor matches first.
+          </p>
+        </div>`;
+      return;
+    }
+
+    const received=currentAllocations.reduce(
+      (sum,d)=>sum+d.meals,0
+    );
+
+    const unreceived=Math.max(
+      0,
+      activeRequirement.quantity-received
+    );
+
+    const rate=Math.round(
+      received/activeRequirement.quantity*100
+    );
+
+    host.innerHTML=`
+      <div class="panel">
+        <h3>Food received allocation</h3>
+
+        <p style="color:var(--muted)">
+          Sources contributing to your ${activeRequirement.quantity}
+          ${escapeHTML(activeRequirement.foodType)} requirement at
+          ${escapeHTML(activeRequirement.location)}.
+        </p>
+
+        ${
+          currentAllocations.filter(d=>d.meals>0).map(d=>`
+            <div class="alloc">
+              <div>
+                <b>${escapeHTML(d.name)}</b><br>
+                <small>
+                  ${escapeHTML(d.foodType)}
+                  • ${d.distance} km away
+                  • ${d.mealsAvailable??d.meals} meals available
+                </small>
+              </div>
+              <strong>${d.meals} meals</strong>
+            </div>
+          `).join('')
+          ||'<p>No donor matches have been confirmed yet.</p>'
+        }
+
+        <div class="kpis">
+          <div class="kpi">
+            <small>Meals Required</small>
+            <strong>${activeRequirement.quantity}</strong>
+          </div>
+
+          <div class="kpi">
+            <small>Meals Received</small>
+            <strong>${received}</strong>
+          </div>
+
+          <div class="kpi">
+            <small>Unreceived</small>
+            <strong>${unreceived}</strong>
+          </div>
+
+          <div class="kpi">
+            <small>Receiving rate</small>
+            <strong>${rate}%</strong>
+          </div>
+        </div>
+      </div>`;
+
+    return;
+  }
+
+  // DONOR VIEW
+  if(!activeDonation){
+    host.innerHTML=`
+      <div class="panel">
+        <h3>Allocation will appear here</h3>
+        <p style="color:var(--muted)">
+          Post a donation to calculate how the selected number
+          of meals will be distributed.
+        </p>
+      </div>`;
+    return;
+  }
+
+  const allocated=sumAllocated();
+
+  host.innerHTML=`
+    <div class="panel">
+      <h3>Optimized allocation</h3>
+
+      <p style="color:var(--muted)">
+        ${activeDonation.quantity}
+        ${escapeHTML(activeDonation.foodType)}
+        allocated according to NGO priority and quantity distribution.
+      </p>
+
+      ${currentAllocations.map(n=>`
+        <div class="alloc">
+          <div>
+            <b>${escapeHTML(n.name)}</b><br>
+            <small>${n.urgency} urgency • ${n.distance} km away</small>
+          </div>
+          <strong>${n.meals} meals</strong>
+        </div>
+      `).join('')}
+
+      <div class="kpis">
+        <div class="kpi">
+          <small>Meals posted</small>
+          <strong>${activeDonation.quantity}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Meals allocated</small>
+          <strong>${allocated}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Unallocated</small>
+          <strong>${activeDonation.quantity-allocated}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Allocation rate</small>
+          <strong>
+            ${activeDonation.quantity
+              ?Math.round(allocated/activeDonation.quantity*100)
+              :0}%
+          </strong>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* TRACKING PAGE */
+
+function renderTracking(){
+  const host=document.getElementById('trackingView');
+  if(currentRole==='volunteer'){
+  renderDeliveryTracking();
+  return;
+}
+
+  // NGO VIEW
+  if(currentRole==='ngo'){
+    if(!activeRequirement){
+      host.innerHTML=`
+        <div class="panel">
+          <h3>No deliveries to track</h3>
+          <p style="color:var(--muted)">
+            Submit a food requirement to begin tracking incoming deliveries.
+          </p>
+        </div>`;
+      return;
+    }
+
+    const rows=currentAllocations.filter(d=>d.meals>0);
+
+    const received=rows.reduce(
+      (sum,d)=>sum+d.meals,0
+    );
+
+    host.innerHTML=`
+      <div class="kpis">
+        <div class="kpi">
+          <small>Meals Required</small>
+          <strong>${activeRequirement.quantity}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Meals Received</small>
+          <strong>${received}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Number of Donors</small>
+          <strong>${rows.length}</strong>
+        </div>
+
+        <div class="kpi">
+          <small>Awaiting delivery</small>
+          <strong>${received}</strong>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Incoming food delivery tracking</h3>
+
+        <p style="color:var(--muted)">
+          Delivery status for ${activeRequirement.quantity}
+          ${escapeHTML(activeRequirement.foodType)}
+          required at ${escapeHTML(activeRequirement.location)}.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Food donor</th>
+              <th>Meals received</th>
+              <th>Food type</th>
+              <th>Delivery status</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${
+              rows.map(d=>`
+                <tr>
+                  <td>${escapeHTML(d.name)}</td>
+                  <td>${d.meals}</td>
+                  <td>${escapeHTML(d.foodType)}</td>
+                  <td>
+                    <span class="tag orange">
+                      Matched — awaiting delivery
+                    </span>
+                  </td>
+                  <td>${d.distance} km</td>
+                </tr>
+              `).join('')
+              ||'<tr><td colspan="5">Confirm donor matches to view incoming deliveries.</td></tr>'
+            }
+          </tbody>
+        </table>
+
+        <p style="color:var(--muted);margin-top:12px">
+          Total meals expected:
+          <b>${received} of ${activeRequirement.quantity}</b>
+        </p>
+      </div>`;
+
+    return;
+  }
+
+  // DONOR VIEW
+  if(!activeDonation){
+    host.innerHTML=`
+      <div class="panel">
+        <h3>No donation to track</h3>
+        <p style="color:var(--muted)">
+          Tracking details will appear after you post a donation.
+        </p>
+      </div>`;
+    return;
+  }
+
+  const allocated=sumAllocated();
+  const rows=currentAllocations.filter(n=>n.meals>0);
+
+  host.innerHTML=`
+    <div class="kpis">
+      <div class="kpi">
+        <small>Meals in this donation</small>
+        <strong>${activeDonation.quantity}</strong>
+      </div>
+
+      <div class="kpi">
+        <small>Meals assigned</small>
+        <strong>${allocated}</strong>
+      </div>
+
+      <div class="kpi">
+        <small>NGO recipients</small>
+        <strong>${rows.length}</strong>
+      </div>
+
+      <div class="kpi">
+        <small>Awaiting pickup</small>
+        <strong>${allocated}</strong>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Pickup & delivery tracking</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>NGO</th>
+            <th>Allocated meals</th>
+            <th>Status</th>
+            <th>ETA</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          ${rows.map((n,i)=>`
+            <tr>
+              <td>${escapeHTML(n.name)}</td>
+              <td>${n.meals}</td>
+              <td>
+                <span class="tag ${i===0?'':'orange'}">
+                  Matched — awaiting pickup
+                </span>
+              </td>
+              <td>
+                ${[18,26,34][ngos.findIndex(x=>x.name===n.name)]} min
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+
+      <p style="color:var(--muted);margin-top:12px">
+        Total meals being tracked:
+        <b>${allocated} of ${activeDonation.quantity}</b>
+      </p>
+    </div>`;
+}
+
+/* HTML ESCAPING */
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,char=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[char]));
+}
+</script>
+
+</body>
+</html>
